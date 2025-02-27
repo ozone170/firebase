@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Hosting Demo</title>
+</head>
+<body>
+    <h1>Welcome to Firebase Hosting!</h1>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js"></script>    
+    <script>
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+    
+    function requestPermission() {
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                console.log("Notification permission granted.");
+                messaging.getToken({ vapidKey: "YOUR_VAPID_KEY" }).then((token) => {
+                    console.log("FCM Token:", token);
+                });
+            } else {
+                console.log("Permission denied");
+            }
+        });
+    }
+    
+    messaging.onMessage((payload) => {
+        console.log("Message received: ", payload);
+        alert(payload.notification.body);
+    });
+    
+    </script>
+  </body>
+</html>
